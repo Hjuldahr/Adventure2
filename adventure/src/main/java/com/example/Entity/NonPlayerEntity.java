@@ -82,7 +82,7 @@ public abstract class NonPlayerEntity extends Entity {
         // Attempt to heal
         List<Entity> entities = healTargeting.getRankedTargets();
         if (!entities.isEmpty()) {
-            boolean hasHealed = performHealSpell(entities);
+            boolean hasHealed = attemptHealSpell(entities);
 
             if (hasHealed) { //if successfully healed, end turn
                 return;
@@ -92,12 +92,12 @@ public abstract class NonPlayerEntity extends Entity {
         // if they cannot heal (no target, not enough MP, wrong role)
         entities = attackTargeting.getRankedTargets();
         if (!entities.isEmpty()) {
-            boolean hasAttacked = performAttackSpell(entities);
+            boolean hasAttacked = attemptAttackSpell(entities);
             if (hasAttacked) { //if successfully spell attacked, end turn
                 return;
             }
 
-            hasAttacked = performAutoAttack(entities);
+            hasAttacked = attemptAutoAttack(entities);
             if (hasAttacked) { //if successfully auto attacked, end turn
                 return;
             }
@@ -110,7 +110,7 @@ public abstract class NonPlayerEntity extends Entity {
         defenceStance = hitPoints.getRatio() > 0.25 ? ProtectionStance.EVADING : ProtectionStance.DEFENDING;
     }
 
-    private boolean performAttackSpell(List<Entity> targets) {
+    private boolean attemptAttackSpell(List<Entity> targets) {
         if (targets.isEmpty()) return false;
 
         // If multiple targets, try AoE first
@@ -125,7 +125,11 @@ public abstract class NonPlayerEntity extends Entity {
                 ));
 
             if (aoeSpell.isPresent()) {
-                return aoeSpell.get().executeMany(targets);
+                int results = 0;
+                for (Entity target : targets) {
+                    results += performSpellAttack(target, aoeSpell.get()) ? 1 : 0;
+                }
+                return results > 0;
             }
         }
 
@@ -139,23 +143,27 @@ public abstract class NonPlayerEntity extends Entity {
                 return diff >= 0 ? diff : -diff; // overkill positive, underkill negative
             }));
 
-        return singleSpell.map(spell -> spell.execute(target)).orElse(false);
+        return singleSpell.map(spell -> performSpellAttack(target, spell)).orElse(false);
     }
 
-    private boolean performAutoAttack(List<Entity> targets) {
+    private boolean attemptAutoAttack(List<Entity> targets) {
         if (targets.isEmpty()) return false;
 
         // If multiple targets, try AoE first
         if (targets.size() > 1 && aoeTargetAttack != null) {
-            return aoeTargetAttack.executeMany(targets);
+            int results = 0;
+            for (Entity target : targets) {
+                results += performAttack(target, aoeTargetAttack) ? 1 : 0;
+            }
+            return results > 0;
         }
 
         // Single-target attack (first in sorted list)
         Entity target = targets.getFirst();
-        return singleTargetAttack.execute(target);
+        return performAttack(target, singleTargetAttack);
     }
 
-    private boolean performHealSpell(List<Entity> targets) {
+    private boolean attemptHealSpell(List<Entity> targets) {
         if (targets.isEmpty()) return false;
 
         // If multiple targets, try AoE first
@@ -170,7 +178,12 @@ public abstract class NonPlayerEntity extends Entity {
                 ));
 
             if (aoeSpell.isPresent()) {
-                return aoeSpell.get().executeMany(targets);
+                //return aoeSpell.get().executeMany(targets);
+                int results = 0;
+                for (Entity target : targets) {
+                    results += performHeal(target, aoeSpell.get()) ? 1 : 0;
+                }
+                return results > 0;
             }
         }
 
@@ -185,7 +198,7 @@ public abstract class NonPlayerEntity extends Entity {
                 return diff >= 0 ? diff : -diff;
             }));
 
-        return singleSpell.map(spell -> spell.execute(target)).orElse(false);
+        return singleSpell.map(spell -> performHeal(target, spell)).orElse(false);
     }
 
     public Map<Long,Float> getAggroMap() {

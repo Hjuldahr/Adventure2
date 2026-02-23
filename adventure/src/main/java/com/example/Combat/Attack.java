@@ -15,5 +15,10 @@ public class Attack {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'execute'");
     }
+
+    public int getAttackPower() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAttackPower'");
+    }
     
 }

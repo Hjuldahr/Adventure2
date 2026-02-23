@@ -95,4 +95,9 @@ public class Spell {
         }
         return true;
     }
+
+    public Attack getAttack() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getAttack'");
+    }
 }

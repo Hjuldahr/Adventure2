@@ -88,7 +88,7 @@ public class PlayerEntity extends Entity {
             }
         }
         
-        performAttack(target);
+        performAttack(target, armoury.getEquippedWeapon().getAttack());
     }
 
     protected void useDefend() {
