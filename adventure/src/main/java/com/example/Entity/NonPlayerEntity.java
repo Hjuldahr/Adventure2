@@ -1,5 +1,6 @@
 package com.example.Entity;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -44,10 +45,12 @@ public abstract class NonPlayerEntity extends Entity {
     private AttackTargeting attackTargeting;
     private HealTargeting healTargeting;
     
-    protected NonPlayerEntity(EntityCategory entityCategory, RoleCategory roleCategory, int level, Role role, String name, int maxHP, int speed) {
-        super(entityCategory, roleCategory, level, name, maxHP, speed);
+    protected NonPlayerEntity(EntityCategory entityCategory, RoleCategory roleCategory, int level, Role role, String name, int maxHP, int speed, Attack singleTargetAttack, Attack aoeTargetAttack, ArrayList<Spell> spells) {
+        super(entityCategory, roleCategory, level, name, maxHP, speed, spells);
 
         this.role = role;
+        this.singleTargetAttack = singleTargetAttack;
+        this.aoeTargetAttack = aoeTargetAttack;
 
         // Simplifies Composition by common associations (can be manually replaced by unique targeting if needed)
         attackTargeting = switch(role) {
@@ -111,7 +114,7 @@ public abstract class NonPlayerEntity extends Entity {
     }
 
     private boolean attemptAttackSpell(List<Entity> targets) {
-        if (targets.isEmpty()) return false;
+        if (targets.isEmpty() || spells.isEmpty()) return false;
 
         // If multiple targets, try AoE first
         if (targets.size() > 1) {
@@ -164,7 +167,7 @@ public abstract class NonPlayerEntity extends Entity {
     }
 
     private boolean attemptHealSpell(List<Entity> targets) {
-        if (targets.isEmpty()) return false;
+        if (targets.isEmpty() || spells.isEmpty()) return false;
 
         // If multiple targets, try AoE first
         if (targets.size() > 1) {

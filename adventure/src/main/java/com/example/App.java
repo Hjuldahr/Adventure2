@@ -3,6 +3,7 @@ package com.example;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.example.Combat.Attack;
 import com.example.Combat.CombatEncounter;
 import com.example.Entity.CompanionEntity;
 import com.example.Entity.EnemyEntity;
@@ -27,26 +28,32 @@ public class App
             2,
             "Zephyra", 
             100, 
-            10);
-        //celestial smite, balming light, incensed flailing (incense burner swung as a flail)
+            10,
+            new Attack(),
+            null
+        );
 
         EnemyEntity enemy1 = new EnemyEntity(
             EntityCategory.HUMAN,
             Role.HUNTER,
             1,
-            "Cutthroat", 
+            "Cultist", 
             25, 
-            15);
-        //stabby stab, chris's crossbow (stolen)
+            15,
+            new Attack(),
+            null
+        );
 
         EnemyEntity enemy2 = new EnemyEntity(
             EntityCategory.UNDEAD,
             Role.BERZERKER, 
             1,
-            "Bruiser", 
+            "Abomination", 
             50, 
-            5);
-        //clobberin club, big boot, his friend the fist (just a punch really)
+            5,
+            new Attack(),
+            new Attack()
+        );
         
         ArrayList<Entity> entities = new ArrayList<>(List.of(player, ally, enemy1, enemy2));
 

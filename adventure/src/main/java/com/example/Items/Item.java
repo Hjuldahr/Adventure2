@@ -1,6 +1,7 @@
 package com.example.Items;
 
 import com.example.Utility.Clamped;
+import com.example.Utility.IdGenerator;
 
 public class Item {
     public static final int MIN_QUANTITY = 1;
@@ -10,6 +11,8 @@ public class Item {
     //sell price in copper
     protected int sellCP; 
     protected Clamped quantity;
+
+    protected final long id = IdGenerator.next(IdGenerator.IdTypes.ITEM);
 
     public Item(String name, int sellCP, int quantity) {
         this.name = name;

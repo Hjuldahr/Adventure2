@@ -4,14 +4,14 @@ import java.util.HashMap;
 
 public abstract class IdGenerator 
 {
-    public enum IdTypes { ENTITY, ITEM }
+    public enum IdTypes { ENTITY, ITEM, SPELL, ATTACK }
     
     private static HashMap<IdTypes,Long> ids = new HashMap<>();
 
-    static {
-        for (IdTypes idType : IdTypes.values()) 
-            ids.put(idType, -1l);
-    }
+    //static {
+    //    for (IdTypes idType : IdTypes.values()) 
+    //        ids.put(idType, -1l);
+    //}
 
     /**
      * returns then increments the current id

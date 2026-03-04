@@ -26,7 +26,7 @@ public class CombatContext {
             Comparator.<Entity> comparingInt(Entity::getSpeed).reversed() // fastest to slowest speed
             .thenComparingLong(Entity::getId) // tie breaker: lowest id
         );
-
+        
         for (int i = 0; i < entities.size(); i++) {
             Entity entity = entities.get(i);
             Long id = entity.getId();

@@ -1,9 +1,12 @@
 package com.example.Entity;
 
+import java.util.ArrayList;
+
 import com.example.Combat.CombatContext;
 import com.example.Combat.Spell;
 import com.example.Items.Armour;
 import com.example.Items.Consumable;
+import com.example.Items.Inventory;
 import com.example.Items.PlayerArmoury;
 import com.example.Utility.Clamped;
 import com.example.Utility.Input;
@@ -13,6 +16,7 @@ public class PlayerEntity extends Entity {
     private int goldPieces = 0;
 
     private PlayerArmoury armoury = new PlayerArmoury();
+    private Inventory inventory = new Inventory(10);
 
     private Timer potionSicknessTimer = new Timer();
 
@@ -20,7 +24,7 @@ public class PlayerEntity extends Entity {
     private final int NAV_HP_REGEN = 5;
     
     public PlayerEntity() {
-        super(EntityCategory.HUMAN, RoleCategory.PLAYER, 1, "Sylvie", 100, 10);
+        super(EntityCategory.HUMAN, RoleCategory.PLAYER, 1, "Sylvie", 100, 10, new ArrayList<>());
     }
 
     public Clamped getMP() {

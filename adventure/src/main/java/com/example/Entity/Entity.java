@@ -48,13 +48,14 @@ public abstract class Entity {
 
     protected final long id = IdGenerator.next(IdGenerator.IdTypes.ENTITY);
     
-    protected Entity(EntityCategory entityCategory, RoleCategory roleCategory, int level, String name, int maxHP, int speed) {
+    protected Entity(EntityCategory entityCategory, RoleCategory roleCategory, int level, String name, int maxHP, int speed, ArrayList<Spell> spells) {
         this.entityCategory = entityCategory;
         this.roleCategory = roleCategory;
         this.level = level;
         this.hitPoints = new Clamped(maxHP, maxHP);
         this.name = name;
         this.speed = speed;
+        this.spells = spells;
     }
 
     public int getLevel() { return level; }
